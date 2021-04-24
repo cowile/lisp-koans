@@ -49,8 +49,29 @@
 ;;;
 ;;; Your goal is to write the scoring function for Greed.
 
+(defun count-sort (counter ints)
+  (dolist (i ints)
+    (incf (aref counter i)))
+  counter)
+
+(defun count-dice (dice)
+  (let ((counter (make-array 7 :element-type 'fixnum :initial-element 0)))
+    (count-sort counter dice)))
+
+(defun div (divisor dividend)
+  (floor (/ divisor dividend)))
+
 (defun score (&rest dice)
-  ____)
+  (let ((counter (count-dice dice)))
+    (+
+     (* 1000 (div (aref counter 1) 3))
+     (* 600 (div (aref counter 6) 3))
+     (* 500 (div (aref counter 5) 3))
+     (* 400 (div (aref counter 4) 3))
+     (* 300 (div (aref counter 3) 3))
+     (* 200 (div (aref counter 2) 3))
+     (* 100 (mod (aref counter 1) 3))
+     (* 50 (mod (aref counter 5) 3)))))
 
 (define-test score-of-an-empty-list-is-zero
   (assert-equal 0 (score)))
